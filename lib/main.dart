@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
+import 'package:my_app/money_value.dart';
 
 import 'money_controls.dart';
 
@@ -39,6 +40,8 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State {
   DateTime _selectedDate = DateTime.now();
 
+  List<MoneyValue> _moneyValues = [];
+
   _handleDateSelect(DateTime date, List list) {
     setState(() {
       _selectedDate = date;
@@ -53,8 +56,9 @@ class MyAppState extends State {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 MoneyControls(
-                  onMoneyTap: (int value) {
+                  onMoneyTap: (double value) {
                     log('Clicked on: ' + value.toString());
+                    Navigator.pop(context);
                   },
                 )
               ],

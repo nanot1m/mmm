@@ -1,9 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'money_button.dart';
 
 class MoneyControls extends StatefulWidget {
-  final Function(int value) onMoneyTap;
+  final Function(double value) onMoneyTap;
 
   MoneyControls({this.onMoneyTap});
 
@@ -15,7 +17,9 @@ class MoneyControls extends StatefulWidget {
 class _MoneyControlsState extends State<MoneyControls> {
   bool _isIncome = true;
 
-  final Function(int value) onMoneyTap;
+  double _value = 0;
+
+  final Function(double value) onMoneyTap;
 
   _MoneyControlsState({this.onMoneyTap});
 
@@ -23,6 +27,13 @@ class _MoneyControlsState extends State<MoneyControls> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text(
+            _value.toString(),
+            style: TextStyle(
+                fontSize: 60, fontFeatures: [FontFeature.tabularFigures()]),
+          )
+        ]),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -69,6 +80,21 @@ class _MoneyControlsState extends State<MoneyControls> {
           children: [10, 20, 50].map(_renderButton).toList(),
         ),
         SizedBox(
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            RaisedButton(
+              child: Row(
+                children: <Widget>[Icon(Icons.check), Text('Сохранить')],
+              ),
+              textTheme: ButtonTextTheme.primary,
+              onPressed: handleSubmit,
+            )
+          ],
+        ),
+        SizedBox(
           height: 28,
         ),
       ],
@@ -88,6 +114,12 @@ class _MoneyControlsState extends State<MoneyControls> {
       (value * (_isIncome ? 1 : -1)).toString();
 
   void handleMoneyTap(int value) {
-    onMoneyTap(value * (_isIncome ? 1 : -1));
+    setState(() {
+      _value += value * (_isIncome ? 1 : -1);
+    });
+  }
+
+  void handleSubmit() {
+    onMoneyTap(_value);
   }
 }
