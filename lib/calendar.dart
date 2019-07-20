@@ -23,19 +23,21 @@ class Calendar extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.0),
       child: CalendarCarousel(
-        onDayPressed: onDayPressed,
-        weekendTextStyle: TextStyle(
-          color: Colors.red,
-        ),
-        thisMonthDayBorderColor: Colors.grey,
-        weekFormat: false,
-        height: 420.0,
-        selectedDateTime: selectedDateTime,
-        daysHaveCircularBorder: false,
-        onCalendarChanged: onCalendarChanged,
-        markedDatesMap: markedDatesMap,
-        firstDayOfWeek: 1,
-      ),
+          onDayPressed: onDayPressed,
+          weekendTextStyle: TextStyle(
+            color: Colors.red,
+          ),
+          thisMonthDayBorderColor: Colors.grey,
+          weekFormat: false,
+          height: 420.0,
+          selectedDateTime: selectedDateTime,
+          daysHaveCircularBorder: false,
+          onCalendarChanged: onCalendarChanged,
+          markedDatesMap: markedDatesMap,
+          firstDayOfWeek: 1,
+          markedDateIconBuilder: (Event event) {
+            return event.icon;
+          }),
     );
   }
 }
