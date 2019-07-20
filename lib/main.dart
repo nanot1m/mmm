@@ -97,20 +97,26 @@ class MyAppState extends State {
     var groups = groupBy(
         _moneyValues, (MoneyValue moneyValue) => moneyValue.day.toString());
     var keys = groups.keys.toList()..sort();
-    // var dates = new EventList<Event>();
-    // var yesterday = DateTime(
-    //     DateTime.now().year, DateTime.now().month, DateTime.now().day - 2);
-    // dates.add(yesterday,
-    //     new Event(title: 'title1', icon: _eventIcon, date: yesterday));
+
+    var events = groups.map((key, value) {
+      var sum = value.fold(0, (a, v) {
+        return a + v.value;
+      }).toString();
+      var event = new Event(date: value.first.day, icon: Text(sum), title: key);
+
+      var mapEntry = MapEntry(value.first.day, List<Event>.from([event]));
+      return mapEntry;
+    });
+
+    var eventList = new EventList<Event>(events: events);
     return Center(
       child: Column(
         children: <Widget>[
           Calendar(
-            onCalendarChanged: _handleCalendarChanged,
-            onDayPressed: _handleDateSelect,
-            selectedDateTime: _selectedDate,
-            // markedDatesMap: dates
-          ),
+              onCalendarChanged: _handleCalendarChanged,
+              onDayPressed: _handleDateSelect,
+              selectedDateTime: _selectedDate,
+              markedDatesMap: eventList),
           renderTotalSummary(),
           ...keys.map((key) => renderMoneyGroup(key, groups[key]))
         ],
