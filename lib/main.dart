@@ -13,7 +13,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Flutter',
+      title: 'My Money Manager',
       theme: ThemeData(
           bottomSheetTheme: BottomSheetThemeData(
               backgroundColor: Colors.white,
@@ -22,7 +22,7 @@ class App extends StatelessWidget {
                       BorderRadius.vertical(top: Radius.circular(40))))),
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Welcome to Flutter'),
+            title: Text('💸 My Money Manager'),
           ),
           body: MyApp()),
     );
