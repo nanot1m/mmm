@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:flutter_calendar_carousel/classes/event_list.dart';
 
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
-    show CalendarCarousel;
 import 'package:my_app/money_value.dart';
 
+import 'calendar.dart';
 import 'money_controls.dart';
 
 void main() => runApp(App());
@@ -42,6 +43,9 @@ class MyAppState extends State {
 
   List<MoneyValue> _moneyValues = [];
 
+  int _currentMonth = DateTime.now().month;
+  int _currentYear = DateTime.now().year;
+
   _handleDateSelect(DateTime date, List list) {
     setState(() {
       _selectedDate = date;
@@ -67,32 +71,24 @@ class MyAppState extends State {
         });
   }
 
+  _handleCalendarChanged(DateTime date) {
+    setState(() {
+      if (_currentMonth != date.month) _currentMonth = date.month;
+      if (_currentYear != date.year) _currentYear = date.year;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: <Widget>[
-          calendar(_handleDateSelect, _selectedDate),
+          Calendar(
+              onCalendarChanged: _handleCalendarChanged,
+              onDayPressed: _handleDateSelect,
+              selectedDateTime: _selectedDate),
         ],
       ),
     );
   }
-}
-
-Widget calendar(dynamic Function(DateTime date, List list) onDayPressed,
-    DateTime selectedDateTime) {
-  return Container(
-    margin: EdgeInsets.symmetric(horizontal: 16.0),
-    child: CalendarCarousel(
-      onDayPressed: onDayPressed,
-      weekendTextStyle: TextStyle(
-        color: Colors.red,
-      ),
-      thisMonthDayBorderColor: Colors.grey,
-      weekFormat: false,
-      height: 420.0,
-      selectedDateTime: selectedDateTime,
-      daysHaveCircularBorder: false,
-    ),
-  );
 }
