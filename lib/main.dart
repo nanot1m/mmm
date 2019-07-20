@@ -1,8 +1,24 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 
-void main() => runApp(MyApp());
+void main() => runApp(App());
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('Welcome to Flutter'),
+          ),
+          body: MyApp()),
+    );
+  }
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -18,30 +34,112 @@ class MyAppState extends State {
     setState(() {
       _selectedDate = date;
     });
+
+    log('message');
+
+    showModalBottomSheet<void>(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              decoration: new BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(40.0),
+                      topRight: const Radius.circular(40.0))),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[MoneyControls()],
+                ),
+              ));
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome to Flutter'),
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(_selectedDate.toString()),
-                calendar(_handleDateSelect, _selectedDate)
-              ],
-            ),
-          ),
-        ),
+    return Center(
+      child: Column(
+        children: <Widget>[
+          calendar(_handleDateSelect, _selectedDate),
+        ],
       ),
     );
+  }
+}
+
+class MoneyControls extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            MoneyButton(
+              value: '1',
+              onPressed: () {},
+            ),
+            MoneyButton(
+              value: '2',
+              onPressed: () {},
+            ),
+            MoneyButton(
+              value: '5',
+              onPressed: () {},
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              MoneyButton(
+                value: '10',
+                onPressed: () {},
+              ),
+              MoneyButton(
+                value: '20',
+                onPressed: () {},
+              ),
+              MoneyButton(
+                value: '50',
+                onPressed: () {},
+              ),
+            ]),
+        SizedBox(
+          height: 12,
+        ),
+      ],
+    );
+  }
+}
+
+class MoneyButton extends StatelessWidget {
+  final String value;
+  final Color color;
+
+  final VoidCallback onPressed;
+
+  MoneyButton({@required this.value, this.color, @required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Ink(
+      decoration: ShapeDecoration(
+          color: color == null ? Colors.lightBlue : color,
+          shape: CircleBorder()),
+      child: IconButton(
+        icon: Text(value, style: TextStyle(color: Colors.white)),
+        onPressed: onPressed,
+        splashColor: Colors.white.withOpacity(0.6),
+      ),
+    ));
   }
 }
 
@@ -56,12 +154,9 @@ Widget calendar(dynamic Function(DateTime date, List list) onDayPressed,
       ),
       thisMonthDayBorderColor: Colors.grey,
       weekFormat: false,
-//      markedDatesMap: _markedDateMap,
       height: 420.0,
       selectedDateTime: selectedDateTime,
       daysHaveCircularBorder: false,
-
-      /// null for not rendering any border, true for circular border, false for rectangular border
     ),
   );
 }
