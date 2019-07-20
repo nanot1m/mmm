@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:collection/collection.dart';
 
 import 'package:flutter/material.dart';
 
@@ -57,7 +57,11 @@ class MyAppState extends State {
               children: <Widget>[
                 MoneyControls(
                   onMoneyTap: (double value) {
-                    log('Clicked on: ' + value.toString());
+                    if (value != 0) {
+                      setState(() {
+                        _moneyValues.add(buildMoneyValue(value, date));
+                      });
+                    }
                     Navigator.pop(context);
                   },
                 )
@@ -69,14 +73,80 @@ class MyAppState extends State {
 
   @override
   Widget build(BuildContext context) {
+    var groups = groupBy(
+        _moneyValues, (MoneyValue moneyValue) => moneyValue.day.toString());
+    var keys = groups.keys.toList()..sort();
     return Center(
       child: Column(
         children: <Widget>[
           calendar(_handleDateSelect, _selectedDate),
+          ...keys.map((key) => renderMoneyGroup(key, groups[key])),
         ],
       ),
     );
   }
+
+  Widget renderMoneyGroup(String key, List<MoneyValue> value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Text(
+            formatDate(value.first.day),
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        Column(
+          children: value.map(renderMoneyValue).toList(),
+        )
+      ],
+    );
+  }
+
+  Widget renderMoneyValue(MoneyValue moneyValue) {
+    return Row(children: [
+      Text(moneyValue.value.toString(),
+          style: TextStyle(
+              fontSize: 20,
+              color: moneyValue.value > 0 ? Colors.green : Colors.red)),
+      // TODO: edit
+      // IconButton(
+      //   icon: Icon(Icons.edit),
+      //   onPressed: () {},
+      //   color: Colors.lightBlue,
+      // ),
+      IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {
+          setState(() {
+            _moneyValues.remove(moneyValue);
+          });
+        },
+        color: Colors.red,
+      )
+    ]);
+  }
+}
+
+String formatDate(DateTime day) {
+  return day.day.toString() +
+      '.' +
+      day.month.toString() +
+      '.' +
+      day.year.toString();
+}
+
+MoneyValue buildMoneyValue(double value, DateTime day) {
+  var sign = value > 0 ? MoneyValueSign.income : MoneyValueSign.expense;
+  return MoneyValue(
+      sign: sign,
+      value: value,
+      period: MoneyValuePeriod.none,
+      title: '',
+      day: day);
 }
 
 Widget calendar(dynamic Function(DateTime date, List list) onDayPressed,

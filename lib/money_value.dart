@@ -8,4 +8,6 @@ class MoneyValue {
   MoneyValueSign sign = MoneyValueSign.income;
   MoneyValuePeriod period = MoneyValuePeriod.none;
   DateTime day = DateTime.now();
+
+  MoneyValue({this.value, this.title, this.sign, this.day, this.period});
 }
