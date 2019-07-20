@@ -82,18 +82,35 @@ class MyAppState extends State {
     });
   }
 
+  static Widget _eventIcon = new Container(
+    decoration: new BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(1000)),
+        border: Border.all(color: Colors.blue, width: 2.0)),
+    child: new Icon(
+      Icons.person,
+      color: Colors.amber,
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     var groups = groupBy(
         _moneyValues, (MoneyValue moneyValue) => moneyValue.day.toString());
     var keys = groups.keys.toList()..sort();
+    // var dates = new EventList<Event>();
+    // var yesterday = DateTime(
+    //     DateTime.now().year, DateTime.now().month, DateTime.now().day - 2);
+    // dates.add(yesterday,
+    //     new Event(title: 'title1', icon: _eventIcon, date: yesterday));
     return Center(
       child: Column(
         children: <Widget>[
           Calendar(
-              onCalendarChanged: _handleCalendarChanged,
-              onDayPressed: _handleDateSelect,
-              selectedDateTime: _selectedDate),
+            onCalendarChanged: _handleCalendarChanged,
+            onDayPressed: _handleDateSelect,
+            selectedDateTime: _selectedDate,
+            // markedDatesMap: dates
+          ),
           ...keys.map((key) => renderMoneyGroup(key, groups[key]))
         ],
       ),
