@@ -11,6 +11,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Welcome to Flutter',
+      theme: ThemeData(
+          bottomSheetTheme: BottomSheetThemeData(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(40))))),
       home: Scaffold(
           appBar: AppBar(
             title: Text('Welcome to Flutter'),
@@ -38,23 +44,15 @@ class MyAppState extends State {
     log('message');
 
     showModalBottomSheet<void>(
-        backgroundColor: Colors.transparent,
         context: context,
         builder: (BuildContext context) {
-          return Container(
-              decoration: new BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(40.0),
-                      topRight: const Radius.circular(40.0))),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                child: new Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[MoneyControls()],
-                ),
-              ));
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[MoneyControls()],
+            ),
+          );
         });
   }
 
