@@ -12,25 +12,30 @@ class Calendar extends StatelessWidget {
   final EventList<Event> markedDatesMap;
 
   final DateTime selectedDateTime;
-  Calendar({this.onDayPressed,this.selectedDateTime, this.onCalendarChanged,this.markedDatesMap});
+  Calendar(
+      {this.onDayPressed,
+      this.selectedDateTime,
+      this.onCalendarChanged,
+      this.markedDatesMap});
 
   @override
   Widget build(BuildContext context) {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 16.0),
-        child: CalendarCarousel(
-            onDayPressed: onDayPressed,
-            weekendTextStyle: TextStyle(
-              color: Colors.red,
-            ),
-            thisMonthDayBorderColor: Colors.grey,
-            weekFormat: false,
-            height: 420.0,
-            selectedDateTime: selectedDateTime,
-            daysHaveCircularBorder: false,
-            onCalendarChanged: onCalendarChanged,
-            markedDatesMap: markedDatesMap
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.0),
+      child: CalendarCarousel(
+        onDayPressed: onDayPressed,
+        weekendTextStyle: TextStyle(
+          color: Colors.red,
         ),
-      );
+        thisMonthDayBorderColor: Colors.grey,
+        weekFormat: false,
+        height: 420.0,
+        selectedDateTime: selectedDateTime,
+        daysHaveCircularBorder: false,
+        onCalendarChanged: onCalendarChanged,
+        markedDatesMap: markedDatesMap,
+        firstDayOfWeek: 1,
+      ),
+    );
   }
 }
