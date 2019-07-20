@@ -111,7 +111,25 @@ class MyAppState extends State {
             selectedDateTime: _selectedDate,
             // markedDatesMap: dates
           ),
+          renderTotalSummary(),
           ...keys.map((key) => renderMoneyGroup(key, groups[key]))
+        ],
+      ),
+    );
+  }
+
+  Widget renderTotalSummary() {
+    var summary =
+        _moneyValues.fold(0.0, (double total, MoneyValue a) => a.value + total);
+    var label = summary > 0 ? 'Вы накопите ' : 'Вы уйдёте в минус на ';
+    var color = summary > 0 ? Colors.green : Colors.red;
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: <Widget>[
+          Text(label, style: TextStyle(fontSize: 20, color: color)),
+          Text((summary.abs()).toString(),
+              style: TextStyle(fontSize: 20, color: color))
         ],
       ),
     );
