@@ -100,6 +100,7 @@ class MyAppState extends State {
           ),
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: value.map(renderMoneyValue).toList(),
         )
       ],
